@@ -16,6 +16,16 @@ export function Layout({ children }: LayoutProps) {
     { name: 'About', href: '/about', current: location.pathname === '/about' },
   ]
 
+  // Clean minimal layout for homepage (ChatGPT style)
+  if (location.pathname === '/') {
+    return (
+      <div className="min-h-screen" style={{ backgroundColor: '#faf9f5' }}>
+        <main>{children}</main>
+      </div>
+    )
+  }
+
+  // Full layout for other pages
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Navigation */}
@@ -25,7 +35,7 @@ export function Layout({ children }: LayoutProps) {
             <div className="flex items-center">
               <Link to="/" className="flex items-center gap-2">
                 <Brain className="h-8 w-8 text-blue-600" />
-                <span className="text-xl font-bold text-gray-900 dark:text-white">
+                <span className="font-heading text-xl font-bold text-gray-900 dark:text-white">
                   Council of Sages
                 </span>
               </Link>

@@ -18,23 +18,39 @@ export function ChatInput({
 }: ChatInputProps) {
   const [internalMessage, setInternalMessage] = useState('')
 
-  const message = value !== undefined ? value : internalMessage
-  const setMessage = onChange || setInternalMessage
+  // Determine if component is controlled
+  const isControlled = value !== undefined
+  const message = isControlled ? value : internalMessage
+
+  // Unified change handler
+  const handleChange = (newValue: string) => {
+    // Update internal state only if uncontrolled
+    if (!isControlled) {
+      setInternalMessage(newValue)
+    }
+    // Always call onChange if provided
+    if (onChange) {
+      onChange(newValue)
+    }
+  }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (message.trim() && onSend) {
       onSend(message.trim())
-      setMessage('')
+      handleChange('')
     }
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    // Avoid sending while using IMEs (composition in progress)
+    if ((e.nativeEvent as any).isComposing) return
+
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
       if (message.trim() && onSend) {
         onSend(message.trim())
-        setMessage('')
+        handleChange('')
       }
     }
   }
@@ -45,7 +61,7 @@ export function ChatInput({
         <div className="relative flex items-end rounded-2xl border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800">
           <textarea
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={(e) => handleChange(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
             disabled={disabled}

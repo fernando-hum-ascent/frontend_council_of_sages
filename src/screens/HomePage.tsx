@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { ChatInput } from '@/components/ui/ChatInput'
+import councilImage from '@/assets/council.png'
 
 export function HomePage() {
   const [inputValue, setInputValue] = useState('')
@@ -47,7 +48,7 @@ export function HomePage() {
         <div className="mb-8 text-center">
           <div className="flex flex-col items-center gap-0">
             <img
-              src="/src/assets/council.png"
+              src={councilImage}
               alt="Council of Sages"
               className="h-32 w-32 object-contain sm:h-40 sm:w-40 lg:h-48 lg:w-48"
             />

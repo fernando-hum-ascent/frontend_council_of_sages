@@ -17,7 +17,7 @@ export interface ChatMessage {
   id: string
   content: string
   role: 'user' | 'assistant'
-  timestamp: Date
+  timestamp: number // Date.now()
   agentQueries?: Record<string, string>
   agentResponses?: Record<string, string>
 }

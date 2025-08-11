@@ -3,8 +3,9 @@ import { useConversationStore } from '@/store/conversationStore'
 import { ChatInput } from '@/components/ui/ChatInput'
 import { ChatMessage } from '@/components/ui/ChatMessage'
 import { LoadingDots } from '@/components/ui/LoadingDots'
-import { AlertTriangle, Bot } from 'lucide-react'
+import { AlertTriangle } from 'lucide-react'
 import councilImage from '@/assets/council.png'
+import sageImage from '@/assets/sage.png'
 
 export function HomePage() {
   const [inputValue, setInputValue] = useState('')
@@ -81,8 +82,15 @@ export function HomePage() {
             {isLoading && (
               <div className="flex justify-start">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900">
-                    <Bot className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  <div
+                    className="flex h-8 w-8 items-center justify-center rounded-full"
+                    style={{ backgroundColor: '#f0ecf0' }}
+                  >
+                    <img
+                      src={sageImage}
+                      alt="Council"
+                      className="h-6 w-6 rounded-full"
+                    />
                   </div>
                   <div className="rounded-2xl bg-gray-100 px-4 py-3 dark:bg-gray-800">
                     <LoadingDots />
@@ -113,7 +121,7 @@ export function HomePage() {
       )}
 
       {/* Input Area */}
-      <div className="border-t border-gray-200 bg-white px-4 py-4 dark:border-gray-700 dark:bg-gray-800">
+      <div className="px-4 py-4" style={{ backgroundColor: '#faf9f5' }}>
         <div className="mx-auto w-full max-w-2xl">
           <ChatInput
             placeholder="Ask your council anything..."

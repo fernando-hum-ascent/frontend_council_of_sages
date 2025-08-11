@@ -64,7 +64,7 @@ export function ChatInput({
   return (
     <div className="w-full">
       <form onSubmit={handleSubmit} className="relative">
-        <div className="relative flex items-end rounded-2xl border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800">
+        <div className="relative flex items-end rounded-2xl bg-transparent shadow-lg dark:bg-gray-800">
           <textarea
             value={message}
             onChange={(e) => handleChange(e.target.value)}
@@ -88,21 +88,40 @@ export function ChatInput({
               <button
                 type="button"
                 onClick={onReset}
-                className="flex h-10 w-10 items-center justify-center rounded-xl bg-gray-100 text-gray-600 transition-all hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                className="flex h-12 w-12 items-center justify-center rounded-xl text-white shadow-sm transition-all hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                style={{ backgroundColor: '#396362' }}
                 aria-label="Reset conversation"
                 title="Reset conversation"
               >
-                <RotateCcw className="h-4 w-4" />
+                <RotateCcw
+                  style={{
+                    width: '24px',
+                    height: '24px',
+                    minWidth: '24px',
+                    minHeight: '24px',
+                  }}
+                />
               </button>
             )}
 
             <button
               type="submit"
               disabled={disabled || !message.trim()}
-              className="flex h-10 w-10 items-center justify-center rounded-xl bg-gray-900 text-white transition-all hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-gray-300 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200 dark:focus:ring-gray-400"
+              className="flex h-12 w-12 items-center justify-center rounded-xl text-white shadow-sm transition-all hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500"
+              style={{
+                backgroundColor:
+                  disabled || !message.trim() ? undefined : '#396362',
+              }}
               aria-label="Send message"
             >
-              <Send className="h-4 w-4" />
+              <Send
+                style={{
+                  width: '24px',
+                  height: '24px',
+                  minWidth: '24px',
+                  minHeight: '24px',
+                }}
+              />
             </button>
           </div>
         </div>

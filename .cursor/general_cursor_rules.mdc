@@ -1,8 +1,13 @@
+---
+description: 
+globs: *
+alwaysApply: false
+---
 # Council of Sages Frontend Project Memory
 
 ## Project Overview
-
 This is a React + TypeScript + Vite application designed for cross-platform deployment (web-first with React Native migration path). Focus on mobile-first responsive design, clean architecture, and platform-agnostic business logic.
+
 
 - **React + TypeScript + Vite** application for AI-powered frontend
 - **Cross-platform ready**: Web desktop/mobile responsive + React Native migration path
@@ -30,6 +35,7 @@ This is a React + TypeScript + Vite application designed for cross-platform depl
 - **`src/utils/`** - **SHARED**: Pure utility functions
 - **`src/types/`** - **SHARED**: TypeScript type definitions
 - **`src/assets/`** - Static assets (images, icons, fonts)
+
 
 ---
 
@@ -60,20 +66,17 @@ This is a React + TypeScript + Vite application designed for cross-platform depl
 ### React & TypeScript Implementation
 
 #### Essential Rules
-
 - **Use TypeScript** - prevents countless bugs and makes refactoring safe
 - **Keep components small** - one responsibility per component
 - **Use functional components + hooks** - the modern React way
 - **Start with local state (useState)** - only lift state up when multiple components need it
 
 #### Performance & Quality
-
 - **Don't create objects/functions in render** - breaks optimization and causes unnecessary re-renders
 - **Use custom hooks for reusable logic** - instead of duplicating code
 - **Handle loading and error states** - for all async operations
 
 #### Implementation Requirements
-
 - **Functional components** with TypeScript
 - **Props interfaces** for all component props
 - **React.FC** type for functional components (optional but consistent)
@@ -102,7 +105,6 @@ This is a React + TypeScript + Vite application designed for cross-platform depl
 ### Mobile & Cross-Platform Requirements
 
 #### Responsive Design Rules
-
 - **Mobile-first approach**: Design for mobile screens first, then desktop
 - **Touch interactions**: All interactive elements ≥ 44px touch targets
 - **Responsive breakpoints**: `sm` (640px), `md` (768px), `lg` (1024px), `xl` (1280px)
@@ -110,7 +112,6 @@ This is a React + TypeScript + Vite application designed for cross-platform depl
 - **Accessibility**: WCAG 2.1 AA compliance for screen readers and assistive technologies
 
 #### Cross-Platform Compatible Patterns
-
 - **Custom hooks**: Keep all business logic in platform-agnostic hooks
 - **State management**: Zustand works identically in web and React Native
 - **API services**: Axios-based services are easily replaceable with fetch or RN networking
@@ -118,7 +119,6 @@ This is a React + TypeScript + Vite application designed for cross-platform depl
 - **Error handling**: ErrorBoundary pattern exists in both React and React Native
 
 #### Mobile Web Optimizations
-
 - **Touch gestures**: Support swipe, tap, long-press interactions
 - **Viewport meta tag**: Properly configured for mobile browsers
 - **PWA ready**: Service worker support for offline functionality (future enhancement)
@@ -131,15 +131,14 @@ This is a React + TypeScript + Vite application designed for cross-platform depl
 ### Development Commands
 
 #### Daily Development
-
 - `npm run dev` - Start development server with HMR (port 3000)
 - `npm run build` - Build for production (TypeScript check + Vite build)
 - `npm run test` - Run tests with Vitest
 - `npm run test:coverage` - Run tests with coverage report
 
 #### Code Quality (run before commits)
-
 - `npm run type-check` - TypeScript compilation check
 - `npm run lint` - ESLint validation (0 warnings policy)
 - `npm run lint:fix` - Fix ESLint issues automatically
 - `npm run format` - Prettier code formatting
+

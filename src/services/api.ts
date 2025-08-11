@@ -1,7 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || 'http://localhost:5073'
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080'
 const API_TIMEOUT = Number(import.meta.env.VITE_API_TIMEOUT) || 10000
 
 // Create axios instance with default config

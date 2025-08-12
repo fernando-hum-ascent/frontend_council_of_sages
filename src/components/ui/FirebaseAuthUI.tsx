@@ -90,6 +90,38 @@ export function FirebaseAuthUI({ className }: FirebaseAuthUIProps) {
 
   return (
     <div className={`firebase-auth-ui ${className || ''}`}>
+      <style>{`
+        .firebase-auth-ui .firebaseui-container {
+          background-color: transparent !important;
+          box-shadow: none !important;
+          max-width: none !important;
+        }
+        .firebase-auth-ui .firebaseui-card-content {
+          background-color: transparent !important;
+          box-shadow: none !important;
+        }
+        .firebase-auth-ui .firebaseui-form-container {
+          background-color: transparent !important;
+          box-shadow: none !important;
+        }
+        .firebase-auth-ui .firebaseui-idp-list {
+          margin-bottom: 2rem !important;
+        }
+        .firebase-auth-ui .firebaseui-idp-password .firebaseui-idp-button,
+        .firebase-auth-ui .firebaseui-idp-button[data-provider-id="password"],
+        .firebase-auth-ui button[data-provider-id="password"],
+        .firebase-auth-ui .mdl-button--colored {
+          background-color: #396362 !important;
+          border: 1px solid #396362 !important;
+        }
+        .firebase-auth-ui .firebaseui-idp-password .firebaseui-idp-button:hover,
+        .firebase-auth-ui .firebaseui-idp-button[data-provider-id="password"]:hover,
+        .firebase-auth-ui button[data-provider-id="password"]:hover,
+        .firebase-auth-ui .mdl-button--colored:hover {
+          background-color: #2d4f4e !important;
+          border: 1px solid #2d4f4e !important;
+        }
+      `}</style>
       <div id="firebaseui-auth-loader" className="py-4 text-center">
         <div className="inline-block h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600"></div>
       </div>

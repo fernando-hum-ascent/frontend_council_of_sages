@@ -41,7 +41,7 @@ export function AuthPage() {
             <img
               src={councilImage}
               alt="Council of Sages"
-              className="mx-auto h-20 w-20 object-contain sm:h-24 sm:w-24"
+              className="mx-auto h-32 w-32 object-contain sm:h-40 sm:w-40 lg:h-48 lg:w-48"
             />
             <h1 className="mt-4 font-heading text-2xl font-bold text-gray-900 sm:text-3xl">
               Welcome to Council of Sages
@@ -53,22 +53,8 @@ export function AuthPage() {
 
           {/* Auth UI */}
           <div className="mt-8">
-            <div className="rounded-2xl bg-white p-6 shadow-lg">
-              <FirebaseAuthUI className="w-full" />
-            </div>
+            <FirebaseAuthUI className="w-full" />
           </div>
-
-          {/* Footer */}
-          <p className="mt-8 text-center text-xs text-gray-500">
-            By signing in, you agree to our{' '}
-            <a href="/terms" className="text-blue-600 hover:text-blue-500">
-              Terms of Service
-            </a>{' '}
-            and{' '}
-            <a href="/privacy" className="text-blue-600 hover:text-blue-500">
-              Privacy Policy
-            </a>
-          </p>
         </div>
       </div>
     </div>

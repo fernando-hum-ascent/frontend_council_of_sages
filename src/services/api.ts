@@ -1,9 +1,22 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios, {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  AxiosError,
+} from 'axios'
+import { authService } from './authService'
+import { useAuthStore } from '@/store/authStore'
 
 const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080'
 const API_TIMEOUT = Number(import.meta.env.VITE_API_TIMEOUT) || 10000
 
-// Create axios instance with default config
+interface APIError {
+  message: string
+  code?: string
+  status?: number
+}
+
+// Enhanced axios instance with Firebase auth integration
 const apiClient: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
   timeout: API_TIMEOUT,
@@ -12,13 +25,36 @@ const apiClient: AxiosInstance = axios.create({
   },
 })
 
-// Request interceptor
+// Token refresh state
+let isRefreshing = false
+let failedQueue: Array<{
+  resolve: (token: string) => void
+  reject: (error: any) => void
+}> = []
+
+// Process queued requests after token refresh
+const processQueue = (error: any, token: string | null) => {
+  failedQueue.forEach(({ resolve, reject }) => {
+    if (error) {
+      reject(error)
+    } else {
+      resolve(token!)
+    }
+  })
+  failedQueue = []
+}
+
+// Request interceptor - attach Firebase ID token
 apiClient.interceptors.request.use(
-  (config) => {
-    // Add auth token if available
-    const token = localStorage.getItem('auth-token')
-    if (token && config.headers) {
-      config.headers.Authorization = `Bearer ${token}`
+  async (config) => {
+    try {
+      const token = await authService.getIdToken()
+      if (token) {
+        config.headers['Authorization'] = `Bearer ${token}`
+      }
+    } catch (error) {
+      console.warn('Failed to get auth token:', error)
+      // Continue with request without token - backend will handle unauthorized
     }
     return config
   },
@@ -27,22 +63,95 @@ apiClient.interceptors.request.use(
   }
 )
 
-// Response interceptor
+// Response interceptor - handle token refresh and auth errors
 apiClient.interceptors.response.use(
   (response: AxiosResponse) => {
     return response
   },
-  (error) => {
-    if (error.response?.status === 401) {
-      // Handle unauthorized access
-      localStorage.removeItem('auth-token')
-      window.location.href = '/login'
+  async (error: AxiosError) => {
+    const originalRequest = error.config
+
+    // Handle 401 Unauthorized - token expired or invalid
+    if (
+      error.response?.status === 401 &&
+      originalRequest &&
+      !originalRequest._retry
+    ) {
+      if (isRefreshing) {
+        // If already refreshing, queue this request
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject })
+        })
+          .then((token) => {
+            originalRequest.headers['Authorization'] = `Bearer ${token}`
+            return apiClient(originalRequest)
+          })
+          .catch((err) => {
+            return Promise.reject(err)
+          })
+      }
+
+      originalRequest._retry = true
+      isRefreshing = true
+
+      try {
+        // Attempt to refresh token
+        const newToken = await authService.getIdToken(true)
+
+        if (newToken) {
+          // Process failed queue
+          processQueue(null, newToken)
+
+          // Retry original request with new token
+          originalRequest.headers['Authorization'] = `Bearer ${newToken}`
+          return apiClient(originalRequest)
+        } else {
+          throw new Error('No valid token available')
+        }
+      } catch (refreshError) {
+        // Token refresh failed - user needs to sign in again
+        processQueue(refreshError, null)
+
+        // Clear auth state
+        useAuthStore.getState().clearAuth()
+
+        // Redirect to login if not already on auth page
+        if (window.location.pathname !== '/auth') {
+          window.location.href = '/auth'
+        }
+
+        return Promise.reject(refreshError)
+      } finally {
+        isRefreshing = false
+      }
     }
-    return Promise.reject(error)
+
+    // Handle other HTTP errors
+    const apiError: APIError = {
+      message: extractErrorMessage(error),
+      code: error.code,
+      status: error.response?.status,
+    }
+
+    return Promise.reject(apiError)
   }
 )
 
-// API service class
+// Extract error message helper
+const extractErrorMessage = (error: AxiosError): string => {
+  if (error.response?.data && typeof error.response.data === 'object') {
+    const data = error.response.data as any
+    return data.message || data.error || 'Request failed'
+  }
+
+  if (error.message) {
+    return error.message
+  }
+
+  return 'An unexpected error occurred'
+}
+
+// API service class with static methods (matches existing pattern)
 export class ApiService {
   static async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
     const response = await apiClient.get<T>(url, config)
@@ -80,9 +189,14 @@ export class ApiService {
     const response = await apiClient.delete<T>(url, config)
     return response.data
   }
+
+  // Utility method to get raw axios instance if needed
+  static getAxiosInstance(): AxiosInstance {
+    return apiClient
+  }
 }
 
-// Health check utility
+// Health check utility (unchanged)
 export const checkApiHealth = async (): Promise<boolean> => {
   try {
     await ApiService.get('/health')
@@ -93,3 +207,10 @@ export const checkApiHealth = async (): Promise<boolean> => {
 }
 
 export default apiClient
+
+// Type declarations for axios config extension
+declare module 'axios' {
+  interface AxiosRequestConfig {
+    _retry?: boolean
+  }
+}

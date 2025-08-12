@@ -1,0 +1,76 @@
+import { useEffect } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { FirebaseAuthUI } from '@/components/ui/FirebaseAuthUI'
+import { useAuth } from '@/hooks/useAuth'
+import councilImage from '@/assets/council.png'
+
+export function AuthPage() {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { isAuthenticated, initialized } = useAuth()
+  console.log('🔴 AuthPage render - isAuthenticated:', isAuthenticated) // Add this
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated && initialized) {
+      const from = location.state?.from || '/'
+      navigate(from, { replace: true })
+    }
+  }, [isAuthenticated, initialized, navigate, location])
+
+  // Show loading state while redirecting
+  if (isAuthenticated) {
+    return (
+      <div className="min-h-screen" style={{ backgroundColor: '#faf9f5' }}>
+        <div className="flex min-h-screen items-center justify-center">
+          <div className="text-center">
+            <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600"></div>
+            <p className="text-gray-600">Redirecting...</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="min-h-screen" style={{ backgroundColor: '#faf9f5' }}>
+      <div className="flex min-h-screen flex-col justify-center px-4 py-12 sm:px-6 lg:px-8">
+        <div className="mx-auto w-full max-w-md">
+          {/* Logo and title */}
+          <div className="text-center">
+            <img
+              src={councilImage}
+              alt="Council of Sages"
+              className="mx-auto h-20 w-20 object-contain sm:h-24 sm:w-24"
+            />
+            <h1 className="mt-4 font-heading text-2xl font-bold text-gray-900 sm:text-3xl">
+              Welcome to Council of Sages
+            </h1>
+            <p className="mt-2 text-sm text-gray-600">
+              Sign in to access your AI-powered advisory council
+            </p>
+          </div>
+
+          {/* Auth UI */}
+          <div className="mt-8">
+            <div className="rounded-2xl bg-white p-6 shadow-lg">
+              <FirebaseAuthUI className="w-full" />
+            </div>
+          </div>
+
+          {/* Footer */}
+          <p className="mt-8 text-center text-xs text-gray-500">
+            By signing in, you agree to our{' '}
+            <a href="/terms" className="text-blue-600 hover:text-blue-500">
+              Terms of Service
+            </a>{' '}
+            and{' '}
+            <a href="/privacy" className="text-blue-600 hover:text-blue-500">
+              Privacy Policy
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}

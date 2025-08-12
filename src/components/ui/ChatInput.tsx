@@ -64,7 +64,7 @@ export function ChatInput({
   return (
     <div className="w-full">
       <form onSubmit={handleSubmit} className="relative">
-        <div className="relative flex items-end rounded-2xl bg-transparent shadow-lg dark:bg-gray-800">
+        <div className="relative flex items-end rounded-2xl bg-white shadow-lg dark:bg-gray-800">
           <textarea
             value={message}
             onChange={(e) => handleChange(e.target.value)}
@@ -73,7 +73,7 @@ export function ChatInput({
             disabled={disabled}
             rows={1}
             className={cn(
-              'max-h-[200px] min-h-[52px] flex-1 resize-none bg-transparent px-4 py-4 text-base text-gray-900 placeholder-gray-500 focus:outline-none dark:text-white dark:placeholder-gray-400',
+              'max-h-[200px] min-h-[52px] flex-1 resize-none bg-white px-4 py-4 text-base text-gray-900 placeholder-gray-500 focus:outline-none dark:bg-gray-800 dark:text-white dark:placeholder-gray-400',
               showReset ? 'pr-24' : 'pr-12'
             )}
             style={{

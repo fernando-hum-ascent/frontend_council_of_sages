@@ -16,7 +16,7 @@ class OrchestratorService {
   async sendMessage(
     message: string,
     conversationId?: string
-  ): Promise<OrchestratorResponse> {
+  ): Promise<ChatMessage> {
     // Check if user is authenticated
     const { user, isAuthenticated } = useAuthStore.getState()
     if (!isAuthenticated || !user) {
@@ -41,7 +41,18 @@ class OrchestratorService {
         request
       )
 
-      return response
+      // Map backend response format to internal format for compatibility
+      return {
+        id: crypto.randomUUID(),
+        content: response.response,
+        role: 'assistant' as const,
+        timestamp: new Date().toISOString(),
+        conversation_id: response.conversation_id,
+        agent_queries: response.agent_queries,
+        metadata: {
+          agent_responses: response.agent_responses,
+        },
+      }
     } catch (error) {
       console.error('Orchestrator request failed:', error)
 
@@ -91,7 +102,7 @@ class OrchestratorService {
   async sendQuery(
     query: string,
     conversationId: string | null = null
-  ): Promise<OrchestratorResponse> {
+  ): Promise<ChatMessage> {
     return this.sendMessage(query, conversationId || undefined)
   }
 }

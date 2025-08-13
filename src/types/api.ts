@@ -13,18 +13,10 @@ export interface OrchestratorRequest {
 }
 
 export interface OrchestratorResponse {
-  id: string
-  content: string
-  role: 'assistant'
-  timestamp: string
+  response: string
   conversation_id: string
-  agent_queries?: Record<string, string>
-  metadata?: {
-    processing_time?: number
-    model_used?: string
-    confidence?: number
-    [key: string]: any
-  }
+  agent_queries: Record<string, string>
+  agent_responses: Record<string, string>
 }
 
 export interface ChatMessage {

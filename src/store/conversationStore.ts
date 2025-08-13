@@ -52,24 +52,13 @@ export const useConversationStore = create<ConversationStore>()(
 
         try {
           // Use new sendMessage method that gets user_id from token
-          const response = await orchestratorService.sendMessage(
+          const assistantMessage = await orchestratorService.sendMessage(
             query,
             state.id || undefined
           )
 
-          // Add assistant response
-          const assistantMessage: ChatMessage = {
-            id: response.id,
-            content: response.content,
-            role: 'assistant',
-            timestamp: new Date().toISOString(),
-            conversation_id: response.conversation_id,
-            agent_queries: response.agent_queries,
-            metadata: response.metadata,
-          }
-
           set({
-            id: response.conversation_id,
+            id: assistantMessage.conversation_id,
             messages: [...get().messages, assistantMessage],
             isLoading: false,
           })

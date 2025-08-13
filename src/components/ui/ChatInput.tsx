@@ -50,7 +50,7 @@ export function ChatInput({
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     // Avoid sending while using IMEs (composition in progress)
-    if ((e.nativeEvent as CompositionEvent).isComposing) return
+    if (e.nativeEvent.isComposing) return
 
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()

@@ -62,7 +62,7 @@ export const useConversationStore = create<ConversationStore>()(
             id: response.id,
             content: response.content,
             role: 'assistant',
-            timestamp: response.timestamp,
+            timestamp: new Date().toISOString(),
             conversation_id: response.conversation_id,
             agent_queries: response.agent_queries,
             metadata: response.metadata,

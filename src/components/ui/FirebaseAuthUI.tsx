@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { EmailAuthProvider, GoogleAuthProvider } from 'firebase/auth'
 import * as firebaseui from 'firebaseui'
 import { auth } from '@/config/firebase'

@@ -36,7 +36,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
             {formatDistanceToNow(message.timestamp, { addSuffix: true })}
           </span>
 
-          {!isUser && message.agentQueries && (
+          {!isUser && message.agent_queries && (
             <button
               onClick={() => setShowDetails(!showDetails)}
               className="flex items-center gap-1 hover:text-gray-700 dark:hover:text-gray-300"
@@ -51,13 +51,13 @@ export function ChatMessage({ message }: ChatMessageProps) {
           )}
         </div>
 
-        {!isUser && showDetails && message.agentQueries && (
+        {!isUser && showDetails && message.agent_queries && (
           <div className="mt-2 rounded-lg bg-gray-50 p-3 text-sm dark:bg-gray-900">
             <h4 className="font-medium text-gray-900 dark:text-white">
               Agent Queries:
             </h4>
             <div className="mt-1 space-y-1">
-              {Object.entries(message.agentQueries).map(([agent, query]) => (
+              {Object.entries(message.agent_queries).map(([agent, query]) => (
                 <div key={agent} className="text-gray-600 dark:text-gray-400">
                   <span className="font-medium">{agent}:</span> {query}
                 </div>

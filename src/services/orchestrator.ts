@@ -25,7 +25,7 @@ class OrchestratorService {
 
     // Prepare request - no user_id needed as it's in the JWT token
     const request: OrchestratorRequest = {
-      message: message.trim(),
+      query: message.trim(),
       conversation_id: conversationId,
       timestamp: new Date().toISOString(),
       metadata: {

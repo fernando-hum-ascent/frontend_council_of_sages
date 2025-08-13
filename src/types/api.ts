@@ -1,6 +1,6 @@
 // Request/Response Types
 export interface OrchestratorRequest {
-  message: string
+  query: string
   conversation_id?: string
   timestamp: string
   metadata?: {

@@ -37,7 +37,7 @@ class OrchestratorService {
 
     try {
       const response = await ApiService.post<OrchestratorResponse>(
-        `${this.baseUrl}/chat`,
+        `${this.baseUrl}`,
         request
       )
 

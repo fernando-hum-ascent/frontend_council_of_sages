@@ -34,11 +34,10 @@ export function FirebaseAuthUI({ className }: FirebaseAuthUIProps) {
       },
       signInFlow: 'popup', // Use popup for better UX
       signInOptions: [
-        // Email/Password
+        // Email/Password - let FirebaseUI handle sign-in vs sign-up routing
         {
           provider: EmailAuthProvider.PROVIDER_ID,
-          requireDisplayName: true,
-          signInMethod: EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD,
+          requireDisplayName: false,
         },
         // Google
         {

@@ -1,5 +1,26 @@
-:{$PORT:3000}
+{
+	admin off
+	persist_config off
+	auto_https off
+	log {
+		format json
+	}
+	servers {
+		trusted_proxies static private_ranges
+	}
+}
 
-root * dist
-try_files {path} /index.html
-file_server
+:{$PORT:3000} {
+	log {
+		format json
+	}
+	
+	handle /health {
+		respond "OK" 200
+	}
+	
+	root * dist
+	encode gzip
+	file_server
+	try_files {path} /index.html
+}

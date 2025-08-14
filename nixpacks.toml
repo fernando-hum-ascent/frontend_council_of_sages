@@ -1,0 +1,12 @@
+[phases.setup]
+  nixPkgs = ["...", "caddy"]
+
+[phases.install]
+  cmds = [
+    "npm ci"
+  ]
+
+[phases.build]
+  cmds = [
+    "npm run build"
+  ] 

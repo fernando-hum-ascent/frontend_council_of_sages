@@ -1,7 +1,5 @@
-:{$PORT:3000} {
-	root * dist
-	file_server
-	
-	# Handle client-side routing for React Router
-	try_files {path} /index.html
-}
+:{$PORT:3000}
+
+root * dist
+try_files {path} /index.html
+file_server

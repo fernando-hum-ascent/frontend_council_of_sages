@@ -146,7 +146,7 @@ export const mapFirebaseUser = (firebaseUser: FirebaseUser): User => ({
 ```typescript
 // Remove user_id from OrchestratorRequest since it will come from JWT token
 export interface OrchestratorRequest {
-  message: string
+  token: string
   conversation_id?: string
   timestamp: string
   metadata?: {
@@ -902,8 +902,6 @@ export function FirebaseAuthUI({ onSignInSuccess, className }: FirebaseAuthUIPro
     const uiConfig: firebaseui.auth.Config = {
       callbacks: {
         signInSuccessWithAuthResult: (authResult, redirectUrl) => {
-          // Handle successful sign-in
-          console.log('Sign-in successful:', authResult.user.email)
           onSignInSuccess?.()
           // Return false to avoid redirect
           return false

@@ -8,15 +8,21 @@ export function AuthPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const { isAuthenticated, initialized } = useAuth()
-  console.log('🔴 AuthPage render - isAuthenticated:', isAuthenticated) // Add this
 
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated && initialized) {
-      const from = location.state?.from || '/'
+      const fromState = (location.state as { from?: string } | null)?.from
+      const candidate =
+        typeof fromState === 'string' ? fromState.trim() : undefined
+      // Allow only internal paths (no scheme, no protocol-relative)
+      const from =
+        candidate && candidate.startsWith('/') && !candidate.startsWith('//')
+          ? candidate
+          : '/'
       navigate(from, { replace: true })
     }
-  }, [isAuthenticated, initialized, navigate, location])
+  }, [isAuthenticated, initialized, navigate, location.state])
 
   // Show loading state while redirecting
   if (isAuthenticated) {

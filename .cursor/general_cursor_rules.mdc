@@ -1,6 +1,7 @@
 ---
-description: 
-globs: *
+description: "Project-wide Cursor rules for the frontend (web + RN migration path)"
+globs:
+  - "**/*"
 alwaysApply: false
 ---
 # Council of Sages Frontend Project Memory

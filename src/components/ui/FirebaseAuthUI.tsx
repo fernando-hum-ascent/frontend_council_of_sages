@@ -18,10 +18,7 @@ export function FirebaseAuthUI({ className }: FirebaseAuthUIProps) {
 
     const uiConfig: firebaseui.auth.Config = {
       callbacks: {
-        signInSuccessWithAuthResult: (authResult) => {
-          // Handle successful sign-in
-          console.log('Sign-in successful:', authResult.user.email)
-          // Return false to avoid redirect - let AuthPage handle navigation
+        signInSuccessWithAuthResult: () => {
           return false
         },
         uiShown: () => {

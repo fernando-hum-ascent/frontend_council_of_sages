@@ -24,10 +24,7 @@ export const useAuthStore = create<AuthStore>()(
 
       // Actions
       setUser: (user) => {
-        console.log('🔵 Zustand setUser called with:', user)
         set({ user, error: null, isAuthenticated: !!user })
-        console.log('🟠 Store state after set:', get()) // Add this
-        console.log('🟠 isAuthenticated after set:', get().isAuthenticated) // Add this
       },
 
       setLoading: (loading) => {

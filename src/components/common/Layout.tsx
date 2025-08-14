@@ -122,7 +122,7 @@ export function Layout({ children }: LayoutProps) {
                     key={item.name}
                     to={item.href}
                     onClick={() => setIsMenuOpen(false)}
-                    className={`block flex min-h-[44px] items-center rounded-md px-4 py-4 text-base font-medium transition-colors ${
+                    className={`flex min-h-[44px] items-center rounded-md px-4 py-4 text-base font-medium transition-colors ${
                       item.current
                         ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20'
                         : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white'

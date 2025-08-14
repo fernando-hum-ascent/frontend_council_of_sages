@@ -27,9 +27,7 @@ class AuthService {
 
           if (firebaseUser) {
             const user = mapFirebaseUser(firebaseUser)
-            console.log('🟢 About to call setUser with:', user) // Add this
-            setUser(user) // ← Check if this line executes
-            console.log('🟡 setUser called') // Add this
+            setUser(user)
           } else {
             setUser(null)
           }

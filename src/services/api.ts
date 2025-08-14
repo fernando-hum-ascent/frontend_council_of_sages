@@ -29,16 +29,18 @@ const apiClient: AxiosInstance = axios.create({
 let isRefreshing = false
 let failedQueue: Array<{
   resolve: (token: string) => void
-  reject: (error: any) => void
+  reject: (error: Error) => void
 }> = []
 
 // Process queued requests after token refresh
-const processQueue = (error: any, token: string | null) => {
+const processQueue = (error: Error | null, token: string | null) => {
   failedQueue.forEach(({ resolve, reject }) => {
     if (error) {
       reject(error)
     } else {
-      resolve(token!)
+      if (token) {
+        resolve(token)
+      }
     }
   })
   failedQueue = []
@@ -140,7 +142,7 @@ apiClient.interceptors.response.use(
 // Extract error message helper
 const extractErrorMessage = (error: AxiosError): string => {
   if (error.response?.data && typeof error.response.data === 'object') {
-    const data = error.response.data as any
+    const data = error.response.data as Record<string, unknown>
     return data.message || data.error || 'Request failed'
   }
 

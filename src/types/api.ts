@@ -7,7 +7,7 @@ export interface OrchestratorRequest {
     client_type: 'web' | 'mobile'
     user_agent?: string
     timestamp: number
-    [key: string]: any
+    [key: string]: unknown
   }
   // user_id is now extracted from Firebase JWT token by backend
 }
@@ -26,11 +26,11 @@ export interface ChatMessage {
   timestamp: string
   conversation_id?: string
   agent_queries?: Record<string, string>
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 // Auth-related API types
-export interface AuthenticatedApiResponse<T = any> {
+export interface AuthenticatedApiResponse<T = unknown> {
   data: T
   success: boolean
   message?: string
@@ -48,7 +48,7 @@ export interface UserProfile {
     theme?: 'light' | 'dark' | 'auto'
     language?: string
     notifications?: boolean
-    [key: string]: any
+    [key: string]: unknown
   }
 }
 
@@ -65,7 +65,7 @@ export interface ConversationSummary {
 export interface ApiErrorResponse {
   error: string
   code?: string
-  details?: Record<string, any>
+  details?: Record<string, unknown>
   timestamp: string
 }
 

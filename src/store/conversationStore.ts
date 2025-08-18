@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 import type { ConversationState, ChatMessage } from '@/types/api'
 import { orchestratorService } from '@/services/orchestrator'
 import { useAuthStore } from './authStore'
+import { useBalanceStore } from './balanceStore'
 
 interface ConversationStore extends ConversationState {
   // Actions
@@ -29,6 +30,17 @@ export const useConversationStore = create<ConversationStore>()(
         if (!isAuthenticated) {
           set({
             error: 'You must be signed in to send messages',
+            isLoading: false,
+          })
+          return
+        }
+
+        // Check balance
+        const { needsTopUp } = useBalanceStore.getState()
+        if (needsTopUp) {
+          set({
+            error:
+              'Your balance is below $0. Please top-up your account to continue sending messages.',
             isLoading: false,
           })
           return

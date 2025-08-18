@@ -3,8 +3,15 @@ import { authService } from '@/services/authService'
 import { useCallback } from 'react'
 
 export function useAuth() {
-  const { user, loading, error, initialized, isAuthenticated, setError } =
-    useAuthStore()
+  const {
+    user,
+    loading,
+    error,
+    initialized,
+    isAuthenticated,
+    authReady,
+    setError,
+  } = useAuthStore()
 
   const signOut = useCallback(async () => {
     try {
@@ -44,6 +51,7 @@ export function useAuth() {
     error,
     initialized,
     isAuthenticated,
+    authReady,
 
     // Actions
     signOut,

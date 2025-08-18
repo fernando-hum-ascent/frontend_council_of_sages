@@ -12,11 +12,18 @@ export interface OrchestratorRequest {
   // user_id is now extracted from Firebase JWT token by backend
 }
 
+export interface Balance {
+  balance_tenths_of_cents: number
+  balance_usd: number
+  updated_at: string
+}
+
 export interface OrchestratorResponse {
   response: string
   conversation_id: string
   agent_queries: Record<string, string>
   agent_responses: Record<string, string>
+  balance?: Balance
 }
 
 export interface ChatMessage {

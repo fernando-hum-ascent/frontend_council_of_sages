@@ -74,7 +74,8 @@ export function ChatInput({
             rows={1}
             className={cn(
               'max-h-[200px] min-h-[52px] flex-1 resize-none bg-white px-4 py-4 text-base text-gray-900 placeholder-gray-500 focus:outline-none dark:bg-gray-800 dark:text-white dark:placeholder-gray-400',
-              showReset ? 'pr-24' : 'pr-12'
+              showReset ? 'pr-24' : 'pr-12',
+              disabled && 'cursor-not-allowed opacity-75'
             )}
             style={{
               minHeight: '52px',

@@ -1,5 +1,7 @@
 import { ChevronLeft, LogOut, User, MessageSquare } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
+import { useBalance } from '@/hooks/useBalance'
+import { timeAgo } from '@/utils/time'
 
 interface SidebarProps {
   isOpen: boolean
@@ -8,6 +10,7 @@ interface SidebarProps {
 
 export function Sidebar({ isOpen, onToggle }: SidebarProps) {
   const { user, signOut } = useAuth()
+  const { balance, loading, error, fetchBalance, needsTopUp } = useBalance()
 
   const handleLogout = async () => {
     try {
@@ -97,6 +100,47 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
                     {user?.email}
                   </p>
                 </div>
+              </div>
+
+              {/* Balance Section */}
+              <div className="rounded-md bg-white/60 p-3 text-sm text-gray-800">
+                <div className="flex items-baseline justify-between">
+                  <span className="font-medium">Balance</span>
+                  <span>
+                    {loading
+                      ? '—'
+                      : balance
+                        ? `$${balance.balance_usd.toFixed(2)}`
+                        : '—'}
+                  </span>
+                </div>
+                {!!balance && (
+                  <div className="mt-1 text-xs text-gray-500">
+                    Updated {timeAgo(balance.updated_at)}
+                  </div>
+                )}
+                {error && (
+                  <div className="mt-2 flex items-center justify-between">
+                    <span className="text-xs text-red-600">Failed to load</span>
+                    <button
+                      onClick={fetchBalance}
+                      className="text-xs text-gray-600 underline hover:text-gray-800"
+                    >
+                      Retry
+                    </button>
+                  </div>
+                )}
+                {needsTopUp && (
+                  <div className="mt-2 rounded border border-red-200 bg-red-50 p-2 text-xs text-red-700">
+                    <div className="flex items-center gap-1">
+                      <span className="font-medium">⚠️ Action Required:</span>
+                    </div>
+                    <div className="mt-1">
+                      Your balance is below $0. Please top-up to continue
+                      sending messages.
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Logout Button */}

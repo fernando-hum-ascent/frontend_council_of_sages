@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { useConversationStore } from '@/store/conversationStore'
+import { useBalance } from '@/hooks/useBalance'
 import { ChatInput } from '@/components/ui/ChatInput'
 import { ChatMessage } from '@/components/ui/ChatMessage'
 import { LoadingDots } from '@/components/ui/LoadingDots'
@@ -14,6 +15,7 @@ export function HomePage() {
   const [inputValue, setInputValue] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const { isOpen, toggle } = useSidebar()
+  const { needsTopUp } = useBalance()
 
   const {
     messages,
@@ -151,8 +153,12 @@ export function HomePage() {
               value={inputValue}
               onChange={setInputValue}
               onSend={handleSend}
-              disabled={isLoading}
-              placeholder="Message Council of Sages..."
+              disabled={isLoading || needsTopUp}
+              placeholder={
+                needsTopUp
+                  ? 'Top-up required to send messages'
+                  : 'Message Council of Sages...'
+              }
             />
 
             {/* Reset conversation button - only show when there are messages */}

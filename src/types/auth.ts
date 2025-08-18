@@ -13,6 +13,7 @@ export interface AuthState {
   loading: boolean
   error: string | null
   initialized: boolean
+  authReady: boolean
 }
 
 export interface AuthContextType extends AuthState {

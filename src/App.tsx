@@ -9,10 +9,14 @@ import { AuthPage } from '@/screens/AuthPage'
 import { AboutPage } from '@/screens/AboutPage'
 import { NotFoundPage } from '@/screens/NotFoundPage'
 import { useFirebaseAuth } from '@/hooks/useFirebaseAuth'
+import { useBalanceBootstrap } from '@/hooks/useBalanceBootstrap'
 
 function App() {
   // Initialize Firebase Auth listener
   useFirebaseAuth()
+
+  // Initialize balance management
+  useBalanceBootstrap()
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>

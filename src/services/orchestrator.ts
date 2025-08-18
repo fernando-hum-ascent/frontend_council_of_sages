@@ -1,5 +1,6 @@
 import { ApiService } from './api'
 import { useAuthStore } from '@/store/authStore'
+import { useBalanceStore } from '@/store/balanceStore'
 import type {
   OrchestratorRequest,
   OrchestratorResponse,
@@ -40,6 +41,11 @@ class OrchestratorService {
         `${this.baseUrl}`,
         request
       )
+
+      // Update balance if included in response
+      if (response.balance) {
+        useBalanceStore.getState().setBalance(response.balance)
+      }
 
       // Map backend response format to internal format for compatibility
       return {

@@ -7,6 +7,7 @@ interface AuthStore extends AuthState {
   setLoading: (loading: boolean) => void
   setError: (error: string | null) => void
   setInitialized: (initialized: boolean) => void
+  setAuthReady: (authReady: boolean) => void
   clearAuth: () => void
   updateUser: (updates: Partial<User>) => void
   isAuthenticated: boolean
@@ -20,6 +21,7 @@ export const useAuthStore = create<AuthStore>()(
       loading: true,
       error: null,
       initialized: false,
+      authReady: false,
       isAuthenticated: false,
 
       // Actions
@@ -39,6 +41,10 @@ export const useAuthStore = create<AuthStore>()(
         set({ initialized })
       },
 
+      setAuthReady: (authReady) => {
+        set({ authReady })
+      },
+
       updateUser: (updates) => {
         const currentUser = get().user
         if (currentUser) {
@@ -53,6 +59,7 @@ export const useAuthStore = create<AuthStore>()(
           loading: false,
           error: null,
           initialized: true,
+          authReady: false,
           isAuthenticated: false,
         })
       },
@@ -63,6 +70,7 @@ export const useAuthStore = create<AuthStore>()(
         user: state.user,
         initialized: state.initialized,
         isAuthenticated: state.isAuthenticated,
+        // authReady is intentionally excluded - it should be determined fresh on each app load
       }),
     }
   )

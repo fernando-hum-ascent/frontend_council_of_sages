@@ -50,12 +50,28 @@ const processQueue = (error: Error | null, token: string | null) => {
 apiClient.interceptors.request.use(
   async (config) => {
     try {
-      const token = await authService.getIdToken()
-      if (token) {
-        config.headers['Authorization'] = `Bearer ${token}`
+      // Check if this is a request that requires authentication
+      const requiresAuth = !config.url?.includes('/health')
+
+      if (requiresAuth) {
+        // Check if auth is ready before attempting to get token
+        if (!authService.isAuthReady()) {
+          console.warn(
+            `API Request to ${config.url}: Auth not ready, sending request without token`
+          )
+        }
+
+        const token = await authService.getIdToken()
+        if (token) {
+          config.headers['Authorization'] = `Bearer ${token}`
+        } else if (requiresAuth) {
+          console.warn(
+            `API Request to ${config.url}: No token available, request may fail with 401`
+          )
+        }
       }
     } catch (error) {
-      console.warn('Failed to get auth token:', error)
+      console.error('Failed to get auth token for API request:', error)
       // Continue with request without token - backend will handle unauthorized
     }
     return config

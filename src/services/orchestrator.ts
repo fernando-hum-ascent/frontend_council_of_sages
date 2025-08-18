@@ -5,6 +5,7 @@ import type {
   OrchestratorRequest,
   OrchestratorResponse,
   ChatMessage,
+  Balance,
 } from '@/types/api'
 
 class OrchestratorService {
@@ -42,9 +43,11 @@ class OrchestratorService {
         request
       )
 
-      // Update balance if included in response
-      if (response.balance) {
-        useBalanceStore.getState().setBalance(response.balance)
+      // Update balance if included in response (accept zero)
+      if (response.balance !== null && response.balance !== undefined) {
+        if (typeof response.balance === 'object') {
+          useBalanceStore.getState().setBalance(response.balance as Balance)
+        }
       }
 
       // Map backend response format to internal format for compatibility

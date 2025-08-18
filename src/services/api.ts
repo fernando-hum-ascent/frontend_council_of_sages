@@ -37,10 +37,10 @@ const processQueue = (error: Error | null, token: string | null) => {
   failedQueue.forEach(({ resolve, reject }) => {
     if (error) {
       reject(error)
+    } else if (token) {
+      resolve(token)
     } else {
-      if (token) {
-        resolve(token)
-      }
+      reject(new Error('No token available'))
     }
   })
   failedQueue = []
@@ -128,7 +128,12 @@ apiClient.interceptors.response.use(
         }
       } catch (refreshError) {
         // Token refresh failed - user needs to sign in again
-        processQueue(refreshError, null)
+        processQueue(
+          refreshError instanceof Error
+            ? refreshError
+            : new Error('Token refresh failed'),
+          null
+        )
 
         // Clear auth state
         useAuthStore.getState().clearAuth()
@@ -159,7 +164,9 @@ apiClient.interceptors.response.use(
 const extractErrorMessage = (error: AxiosError): string => {
   if (error.response?.data && typeof error.response.data === 'object') {
     const data = error.response.data as Record<string, unknown>
-    return data.message || data.error || 'Request failed'
+    if (typeof data.message === 'string') return data.message
+    if (typeof data.error === 'string') return data.error
+    return 'Request failed'
   }
 
   if (error.message) {

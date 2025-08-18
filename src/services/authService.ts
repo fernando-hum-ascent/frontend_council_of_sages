@@ -36,12 +36,16 @@ class AuthService {
           } else {
             setUser(null)
             setAuthReady(false)
+            // Clear sensitive state when transitioning to unauthenticated
+            useBalanceStore.getState().clear()
           }
         } catch (error) {
           console.error('Auth state change error:', error)
           setError('Authentication error occurred')
           setUser(null)
           setAuthReady(false)
+          // Ensure sensitive state is cleared on auth errors
+          useBalanceStore.getState().clear()
         }
       },
       (error) => {
@@ -119,6 +123,7 @@ class AuthService {
       const token = await currentUser.getIdToken(forceRefresh)
       if (!token) {
         console.warn('getIdToken: Token is empty')
+        return null
       }
       return token
     } catch (error) {

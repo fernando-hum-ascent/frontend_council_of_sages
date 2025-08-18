@@ -4,6 +4,7 @@ import {
   GoogleAuthProvider,
   sendEmailVerification,
 } from 'firebase/auth'
+import type { UserInfo } from 'firebase/auth'
 import * as firebaseui from 'firebaseui'
 import { auth } from '@/config/firebase'
 import 'firebaseui/dist/firebaseui.css'
@@ -22,26 +23,27 @@ export function FirebaseAuthUI({ className }: FirebaseAuthUIProps) {
 
     const uiConfig: firebaseui.auth.Config = {
       callbacks: {
-        signInSuccessWithAuthResult: async (authResult) => {
+        signInSuccessWithAuthResult: (authResult) => {
           // If this is a new user who used email/password, send verification email
           if (authResult.additionalUserInfo?.isNewUser) {
             // Check if this is an email/password sign-up by looking at provider data
             const isEmailPasswordSignUp =
               authResult.user.providerData.some(
-                (provider) =>
+                (provider: UserInfo) =>
                   provider.providerId === EmailAuthProvider.PROVIDER_ID
               ) && !authResult.user.emailVerified
 
             if (isEmailPasswordSignUp) {
-              try {
-                await sendEmailVerification(authResult.user, {
-                  url: `${window.location.origin}/verify-email?verified=1`,
-                  handleCodeInApp: false,
+              void sendEmailVerification(authResult.user, {
+                url: `${window.location.origin}/verify-email?verified=1`,
+                handleCodeInApp: false,
+              })
+                .then(() => {
+                  console.log('Verification email sent successfully')
                 })
-                console.log('Verification email sent successfully')
-              } catch (error) {
-                console.error('Failed to send verification email:', error)
-              }
+                .catch((error) => {
+                  console.error('Failed to send verification email:', error)
+                })
             }
           }
           return false

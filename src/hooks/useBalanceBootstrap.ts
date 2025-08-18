@@ -15,12 +15,15 @@ export function useBalanceBootstrap() {
   const fetchBalance = useBalanceStore((state) => state.fetchBalance)
   const clear = useBalanceStore((state) => state.clear)
 
-  const visibilityTimeoutRef = useRef<number>()
+  const visibilityTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  )
 
   // Debounced visibility handler
   const handleVisibilityChange = useCallback(() => {
-    if (visibilityTimeoutRef.current) {
+    if (visibilityTimeoutRef.current !== null) {
       clearTimeout(visibilityTimeoutRef.current)
+      visibilityTimeoutRef.current = null
     }
 
     visibilityTimeoutRef.current = setTimeout(() => {
@@ -49,8 +52,9 @@ export function useBalanceBootstrap() {
 
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange)
-      if (visibilityTimeoutRef.current) {
+      if (visibilityTimeoutRef.current !== null) {
         clearTimeout(visibilityTimeoutRef.current)
+        visibilityTimeoutRef.current = null
       }
     }
   }, [handleVisibilityChange])

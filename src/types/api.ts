@@ -23,7 +23,7 @@ export interface OrchestratorResponse {
   conversation_id: string
   agent_queries: Record<string, string>
   agent_responses: Record<string, string>
-  balance?: Balance
+  balance?: number | Balance
 }
 
 export interface ChatMessage {

@@ -74,14 +74,13 @@ export function VerifyEmailPage() {
       await authService.reloadCurrentUser()
 
       // The useEffect watching user.emailVerified will handle the redirect
-      // Just show a message if still not verified
-      setTimeout(() => {
-        if (!user?.emailVerified) {
-          setResendMessage(
-            'Email not yet verified. Please check your inbox and click the verification link.'
-          )
-        }
-      }, 100)
+      // Just show a message if still not verified (read fresh auth state to avoid stale closure)
+      const verified = auth.currentUser?.emailVerified
+      if (!verified) {
+        setResendMessage(
+          'Email not yet verified. Please check your inbox and click the verification link.'
+        )
+      }
     } catch (error) {
       console.error('Failed to check verification:', error)
       setResendMessage('Failed to check verification status. Please try again.')

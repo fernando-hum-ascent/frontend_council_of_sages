@@ -32,7 +32,7 @@ export const useBalanceStore = create<BalanceStore>((set, get) => ({
       error: null,
       loading: false,
       lastFetchedAt: Date.now(),
-      needsTopUp: balance.balance_cents < 0,
+      needsTopUp: balance.balance_tenths_of_cents < 0,
     })
   },
 

@@ -2,7 +2,7 @@
 
 Project-specific plan
 
-- Objective: After sign-up, send Firebase's built-in verification email and restrict access until `user.emailVerified` is true. Keep existing Email/Password + Google sign-in. No passwordless email-link or forced set-password flow.
+- Objective: After sign-up, send Firebase's built-in verification email and restrict access until `user.emailVerified` is true. Keep existing Email/Password + Google sign-in.
 
 - Files to modify or add
   - `src/components/ui/FirebaseAuthUI.tsx`

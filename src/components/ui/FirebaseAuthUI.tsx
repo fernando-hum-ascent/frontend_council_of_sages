@@ -1,5 +1,9 @@
 import { useEffect, useRef } from 'react'
-import { EmailAuthProvider, GoogleAuthProvider } from 'firebase/auth'
+import {
+  EmailAuthProvider,
+  GoogleAuthProvider,
+  sendEmailVerification,
+} from 'firebase/auth'
 import * as firebaseui from 'firebaseui'
 import { auth } from '@/config/firebase'
 import 'firebaseui/dist/firebaseui.css'
@@ -18,7 +22,28 @@ export function FirebaseAuthUI({ className }: FirebaseAuthUIProps) {
 
     const uiConfig: firebaseui.auth.Config = {
       callbacks: {
-        signInSuccessWithAuthResult: () => {
+        signInSuccessWithAuthResult: async (authResult) => {
+          // If this is a new user who used email/password, send verification email
+          if (authResult.additionalUserInfo?.isNewUser) {
+            // Check if this is an email/password sign-up by looking at provider data
+            const isEmailPasswordSignUp =
+              authResult.user.providerData.some(
+                (provider) =>
+                  provider.providerId === EmailAuthProvider.PROVIDER_ID
+              ) && !authResult.user.emailVerified
+
+            if (isEmailPasswordSignUp) {
+              try {
+                await sendEmailVerification(authResult.user, {
+                  url: `${window.location.origin}/verify-email?verified=1`,
+                  handleCodeInApp: false,
+                })
+                console.log('Verification email sent successfully')
+              } catch (error) {
+                console.error('Failed to send verification email:', error)
+              }
+            }
+          }
           return false
         },
         uiShown: () => {

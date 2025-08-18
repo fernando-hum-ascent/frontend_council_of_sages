@@ -7,6 +7,7 @@ import { ProtectedRoute } from '@/components/common/ProtectedRoute'
 import { HomePage } from '@/screens/HomePage'
 import { AuthPage } from '@/screens/AuthPage'
 import { AboutPage } from '@/screens/AboutPage'
+import { VerifyEmailPage } from '@/screens/VerifyEmailPage'
 import { NotFoundPage } from '@/screens/NotFoundPage'
 import { useFirebaseAuth } from '@/hooks/useFirebaseAuth'
 import { useBalanceBootstrap } from '@/hooks/useBalanceBootstrap'
@@ -24,6 +25,7 @@ function App() {
         <Routes>
           {/* Public routes */}
           <Route path="/auth" element={<AuthPage />} />
+          <Route path="/verify-email" element={<VerifyEmailPage />} />
           <Route path="/about" element={<AboutPage />} />
 
           {/* Protected routes */}

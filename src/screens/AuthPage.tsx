@@ -7,11 +7,18 @@ import councilImage from '@/assets/council.png'
 export function AuthPage() {
   const navigate = useNavigate()
   const location = useLocation()
-  const { isAuthenticated, initialized } = useAuth()
+  const { isAuthenticated, initialized, user } = useAuth()
 
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated && initialized) {
+      // If user is authenticated but email not verified, redirect to verify-email
+      if (user && !user.emailVerified) {
+        navigate('/verify-email', { replace: true })
+        return
+      }
+
+      // If verified or verification not required, proceed to intended route
       const fromState = (location.state as { from?: string } | null)?.from
       const candidate =
         typeof fromState === 'string' ? fromState.trim() : undefined
@@ -22,7 +29,7 @@ export function AuthPage() {
           : '/'
       navigate(from, { replace: true })
     }
-  }, [isAuthenticated, initialized, navigate, location.state])
+  }, [isAuthenticated, initialized, user, navigate, location.state])
 
   // Show loading state while redirecting
   if (isAuthenticated) {

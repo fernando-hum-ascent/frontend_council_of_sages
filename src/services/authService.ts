@@ -2,7 +2,9 @@ import {
   signOut as firebaseSignOut,
   onAuthStateChanged,
   updateProfile,
+  sendEmailVerification,
   type User as FirebaseUser,
+  type ActionCodeSettings,
 } from 'firebase/auth'
 import { auth } from '@/config/firebase'
 import { useAuthStore } from '@/store/authStore'
@@ -123,6 +125,54 @@ class AuthService {
       console.error('Get ID token error:', error)
       return null
     }
+  }
+
+  /**
+   * Send email verification to current user
+   */
+  async sendVerificationEmail(
+    actionCodeSettings?: ActionCodeSettings
+  ): Promise<void> {
+    const currentUser = auth.currentUser
+    if (!currentUser) {
+      throw new Error('No authenticated user')
+    }
+
+    try {
+      await sendEmailVerification(currentUser, actionCodeSettings)
+    } catch (error) {
+      console.error('Send verification email error:', error)
+      throw error
+    }
+  }
+
+  /**
+   * Reload current user to get updated email verification status
+   */
+  async reloadCurrentUser(): Promise<void> {
+    const currentUser = auth.currentUser
+    if (!currentUser) {
+      throw new Error('No authenticated user')
+    }
+
+    try {
+      await currentUser.reload()
+
+      // Update local store with fresh user data
+      const user = mapFirebaseUser(currentUser)
+      useAuthStore.getState().setUser(user)
+    } catch (error) {
+      console.error('Reload user error:', error)
+      throw error
+    }
+  }
+
+  /**
+   * Check if user's email is verified
+   */
+  isEmailVerified(user?: FirebaseUser | null): boolean {
+    const currentUser = user || auth.currentUser
+    return currentUser?.emailVerified ?? false
   }
 
   /**

@@ -19,7 +19,7 @@ export function ProtectedRoute({
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="text-center">
-          <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600"></div>
+          <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-b-2 border-primary"></div>
           <p className="text-gray-600">Loading...</p>
         </div>
       </div>

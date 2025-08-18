@@ -34,10 +34,10 @@ export function AuthPage() {
   // Show loading state while redirecting
   if (isAuthenticated) {
     return (
-      <div className="min-h-screen" style={{ backgroundColor: '#faf9f5' }}>
+      <div className="min-h-screen bg-background">
         <div className="flex min-h-screen items-center justify-center">
           <div className="text-center">
-            <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600"></div>
+            <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-b-2 border-primary"></div>
             <p className="text-gray-600">Redirecting...</p>
           </div>
         </div>
@@ -46,7 +46,7 @@ export function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#faf9f5' }}>
+    <div className="min-h-screen bg-background">
       <div className="flex min-h-screen flex-col justify-center px-4 py-12 sm:px-6 lg:px-8">
         <div className="mx-auto w-full max-w-md">
           {/* Logo and title */}

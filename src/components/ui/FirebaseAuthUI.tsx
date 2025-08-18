@@ -144,7 +144,7 @@ export function FirebaseAuthUI({ className }: FirebaseAuthUIProps) {
         }
       `}</style>
       <div id="firebaseui-auth-loader" className="py-4 text-center">
-        <div className="inline-block h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600"></div>
+        <div className="inline-block h-8 w-8 animate-spin rounded-full border-b-2 border-primary"></div>
       </div>
       <div ref={elementRef} id="firebaseui-auth-container"></div>
     </div>

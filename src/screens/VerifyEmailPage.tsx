@@ -100,7 +100,7 @@ export function VerifyEmailPage() {
   }
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#faf9f5' }}>
+    <div className="min-h-screen bg-background">
       <div className="flex min-h-screen flex-col justify-center px-4 py-12 sm:px-6 lg:px-8">
         <div className="mx-auto w-full max-w-md">
           {/* Logo and title */}
@@ -120,8 +120,8 @@ export function VerifyEmailPage() {
           </div>
 
           {/* Instructions */}
-          <div className="mt-8 rounded-lg bg-blue-50 p-4">
-            <div className="text-sm text-blue-800">
+          <div className="mt-8 rounded-lg bg-primary-50 p-4">
+            <div className="text-sm text-primary-800">
               <h3 className="font-medium">Please check your email</h3>
               <ul className="mt-2 list-inside list-disc space-y-1">
                 <li>Look for an email from Firebase Auth</li>
@@ -150,7 +150,7 @@ export function VerifyEmailPage() {
             <button
               onClick={handleCheckVerification}
               disabled={isChecking}
-              className="flex w-full justify-center rounded-md border border-transparent bg-blue-600 px-4 py-3 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex w-full justify-center rounded-md border border-transparent bg-green-600 px-4 py-3 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isChecking ? (
                 <>
@@ -165,7 +165,7 @@ export function VerifyEmailPage() {
             <button
               onClick={handleResendEmail}
               disabled={isResending}
-              className="flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isResending ? (
                 <>
@@ -179,7 +179,7 @@ export function VerifyEmailPage() {
 
             <button
               onClick={handleSignOut}
-              className="flex w-full justify-center rounded-md border border-transparent bg-transparent px-4 py-3 text-sm font-medium text-gray-600 shadow-sm hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+              className="flex w-full justify-center rounded-md border border-transparent bg-transparent px-4 py-3 text-sm font-medium text-gray-600 shadow-sm hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
             >
               Sign out
             </button>

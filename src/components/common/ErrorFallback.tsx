@@ -38,7 +38,7 @@ export function ErrorFallback({
         <div className="space-y-3">
           <button
             onClick={resetErrorBoundary}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-6 py-3 text-white transition-colors hover:bg-blue-700"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-green-600 px-6 py-3 text-white transition-colors hover:bg-green-700"
           >
             <RefreshCw size={20} />
             Try Again

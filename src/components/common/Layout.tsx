@@ -19,9 +19,13 @@ export function Layout({ children }: LayoutProps) {
   ]
 
   // Clean minimal layout for homepage and auth page (ChatGPT style)
-  if (location.pathname === '/' || location.pathname === '/auth') {
+  if (
+    location.pathname === '/' ||
+    location.pathname === '/auth' ||
+    location.pathname === '/verify-email'
+  ) {
     return (
-      <div className="min-h-screen" style={{ backgroundColor: '#faf9f5' }}>
+      <div className="min-h-screen bg-background">
         <main>{children}</main>
       </div>
     )
@@ -36,7 +40,7 @@ export function Layout({ children }: LayoutProps) {
           <div className="flex h-16 justify-between">
             <div className="flex items-center">
               <Link to="/" className="flex items-center gap-2">
-                <Brain className="h-8 w-8 text-blue-600" />
+                <Brain className="h-8 w-8 text-primary" />
                 <span className="font-heading text-xl font-bold text-gray-900 dark:text-white">
                   Council of Sages
                 </span>
@@ -88,7 +92,7 @@ export function Layout({ children }: LayoutProps) {
               ) : (
                 <Link
                   to="/auth"
-                  className="flex items-center space-x-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                  className="flex items-center space-x-2 rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
                 >
                   <LogIn className="h-4 w-4" />
                   <span>Sign In</span>
@@ -166,7 +170,7 @@ export function Layout({ children }: LayoutProps) {
                     <Link
                       to="/auth"
                       onClick={() => setIsMenuOpen(false)}
-                      className="mx-4 flex items-center space-x-2 rounded-md bg-blue-600 px-4 py-2 text-base font-medium text-white hover:bg-blue-700"
+                      className="mx-4 flex items-center space-x-2 rounded-md bg-green-600 px-4 py-2 text-base font-medium text-white hover:bg-green-700"
                     >
                       <LogIn className="h-4 w-4" />
                       <span>Sign In</span>

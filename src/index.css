@@ -70,3 +70,8 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* Simple Stripe Payment Element Styles */
+.payment-element-container {
+  /* Let Stripe Payment Element use its natural height */
+}

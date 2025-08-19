@@ -27,7 +27,7 @@ This mirrors Stripe’s recommended Payment Intents flow. See: [React Stripe](ht
 Add authenticated endpoints and webhook (paths are suggestions; adapt to your backend):
 
 - `POST /payments/create-payment-intent`
-  - Body: `{ amount_usd: number }` or `{ price_id: string }` (prefer server‑side mapping to fixed tiers for security).
+  - Body: `{ amount_usd: number }` .
   - Server creates a PaymentIntent: `stripe.PaymentIntent.create(amount=<amount_in_cents>, currency='usd', automatic_payment_methods={'enabled': True}, metadata={'user_id': <from JWT>})`.
   - Returns: `{ client_secret, intent_id, amount, currency, status }`.
 
@@ -253,19 +253,6 @@ Notes:
 
 - After a tentative success, call `fetchBalance()` with a short delay (1–2s). The authoritative update will arrive via the webhook updating the backend balance.
 - If balance is still unchanged after a few seconds, show a tooltip with “Processing payment… this can take a moment.” Optionally add a lightweight polling loop for ~10s.
-
----
-
-### Webhook local development
-
-Use Stripe CLI to forward webhooks to your local backend:
-
-```bash
-stripe login
-stripe listen --forward-to localhost:8080/stripe/webhook
-```
-
-Set `STRIPE_WEBHOOK_SECRET` from the CLI output. Use Stripe test cards (e.g., 4242 4242 4242 4242). See: [Stripe test cards](https://stripe.com/docs/testing#international-cards).
 
 ---
 

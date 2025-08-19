@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import { ChevronLeft, LogOut, User, MessageSquare } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import { useBalance } from '@/hooks/useBalance'
 import { timeAgo } from '@/utils/time'
+import { TopUpDialog } from './TopUpDialog'
 
 interface SidebarProps {
   isOpen: boolean
@@ -11,6 +13,7 @@ interface SidebarProps {
 export function Sidebar({ isOpen, onToggle }: SidebarProps) {
   const { user, signOut } = useAuth()
   const { balance, loading, error, fetchBalance, needsTopUp } = useBalance()
+  const [topUpOpen, setTopUpOpen] = useState(false)
 
   const handleLogout = async () => {
     try {
@@ -141,6 +144,13 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
                     </div>
                   </div>
                 )}
+                <button
+                  onClick={() => setTopUpOpen(true)}
+                  className="mt-2 w-full rounded-md bg-gray-900 px-3 py-2 text-sm text-white hover:opacity-90"
+                >
+                  Add credits
+                  {needsTopUp ? ' (required)' : ''}
+                </button>
               </div>
 
               {/* Logout Button */}
@@ -170,6 +180,9 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
           onClick={onToggle}
         />
       )}
+
+      {/* Top Up Dialog */}
+      <TopUpDialog open={topUpOpen} onClose={() => setTopUpOpen(false)} />
     </>
   )
 }

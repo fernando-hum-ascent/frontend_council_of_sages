@@ -68,6 +68,20 @@ export interface ConversationSummary {
   created_at: string
 }
 
+export interface CreatePaymentIntentResponse {
+  client_secret: string
+  intent_id: string
+  amount: number
+  currency: string
+  status:
+    | 'requires_payment_method'
+    | 'requires_confirmation'
+    | 'requires_action'
+    | 'processing'
+    | 'succeeded'
+    | 'canceled'
+}
+
 // API Error types
 export interface ApiErrorResponse {
   error: string

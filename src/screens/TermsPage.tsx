@@ -299,10 +299,11 @@ export function TermsPage() {
               </h2>
               <p className="leading-relaxed text-gray-700">
                 These Terms shall be governed by and construed in accordance
-                with the laws of [Your Jurisdiction], without regard to its
+                with the laws of the United States, without regard to its
                 conflict of law principles. Any disputes arising under these
                 Terms shall be resolved through binding arbitration in
-                accordance with the rules of [Arbitration Organization].
+                accordance with the rules of the American Arbitration
+                Association.
               </p>
             </section>
 

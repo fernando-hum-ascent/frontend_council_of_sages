@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import { loadStripe } from '@stripe/stripe-js'
 import {
   Elements,
@@ -87,37 +87,76 @@ export function TopUpDialog({
   const [creatingIntent, setCreatingIntent] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [validationError, setValidationError] = useState<string | null>(null)
+  const abortControllerRef = useRef<AbortController | null>(null)
+  const latestRequestIdRef = useRef(0)
 
   // Create PaymentIntent when dialog opens or amount changes (only if valid)
   useEffect(() => {
-    if (!open) return
+    if (!open) {
+      // If dialog is closed, abort any in-flight request
+      abortControllerRef.current?.abort()
+      setCreatingIntent(false)
+      return
+    }
 
     const validation = validateAmount(amountUsd)
     if (validation) {
+      // Invalid amount: abort any in-flight request and clear state
+      abortControllerRef.current?.abort()
       setClientSecret(null)
+      setCreatingIntent(false)
       return
     }
 
     const createPaymentIntent = async () => {
+      // Abort any previous request
+      abortControllerRef.current?.abort()
+
+      // Create a new request context
+      const controller = new AbortController()
+      abortControllerRef.current = controller
+
+      // Bump request id guard
+      const requestId = ++latestRequestIdRef.current
+
       setCreatingIntent(true)
       setError(null)
       setClientSecret(null)
 
       try {
-        const { client_secret } =
-          await paymentsService.createPaymentIntent(amountUsd)
-        setClientSecret(client_secret)
-      } catch (e) {
-        setError(
-          e instanceof Error ? e.message : 'Failed to initialize payment'
+        const { client_secret } = await paymentsService.createPaymentIntent(
+          amountUsd,
+          controller.signal
         )
+
+        // Only apply result if this is the latest request
+        if (requestId === latestRequestIdRef.current) {
+          setClientSecret(client_secret)
+        }
+      } catch (e: unknown) {
+        // Swallow aborts; surface other errors
+        const maybeError = e as { code?: string; message?: string }
+        const isAborted = maybeError?.code === 'ERR_CANCELED'
+        if (!isAborted) {
+          setError(maybeError?.message || 'Failed to initialize payment')
+        }
       } finally {
-        setCreatingIntent(false)
+        // Only clear loading if this is still the latest request
+        if (requestId === latestRequestIdRef.current) {
+          setCreatingIntent(false)
+        }
       }
     }
 
     createPaymentIntent()
   }, [open, amountUsd])
+
+  // Abort any pending request on unmount
+  useEffect(() => {
+    return () => {
+      abortControllerRef.current?.abort()
+    }
+  }, [])
 
   const options = useMemo(() => {
     if (!clientSecret) return null

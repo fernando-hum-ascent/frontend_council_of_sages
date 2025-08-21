@@ -10,6 +10,9 @@ export function getInitials(displayName: string): string {
   const normalized = displayName.trim().replace(/[_\s]+/g, ' ')
   const parts = normalized.split(' ').filter((part) => part.length > 0)
 
+  // If nothing remains after normalization/collapse, return fallback
+  if (parts.length === 0) return '?'
+
   if (parts.length === 1) {
     return parts[0].charAt(0).toUpperCase()
   }

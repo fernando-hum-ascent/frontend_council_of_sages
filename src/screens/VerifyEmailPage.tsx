@@ -124,6 +124,7 @@ export function VerifyEmailPage() {
               <h3 className="font-medium">Please check your email</h3>
               <ul className="mt-2 list-inside list-disc space-y-1">
                 <li>Look for an email from Firebase Auth</li>
+                <li>Check your spam/junk folder if you don't see it</li>
                 <li>Click the verification link in the email</li>
                 <li>Return here and click "I've verified" below</li>
               </ul>

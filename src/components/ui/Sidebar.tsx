@@ -135,7 +135,7 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
                     {loading
                       ? '—'
                       : balance
-                        ? `$${balance.balance_usd.toFixed(2)}`
+                        ? `$${balance?.balance_usd?.toFixed(2) ?? '0.00'}`
                         : '—'}
                   </span>
                 </div>

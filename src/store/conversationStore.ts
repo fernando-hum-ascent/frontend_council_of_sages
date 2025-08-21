@@ -64,14 +64,18 @@ export const useConversationStore = create<ConversationStore>()(
 
         try {
           // Use new sendMessage method that gets user_id from token
-          const assistantMessage = await orchestratorService.sendMessage(
+          const assistantMessages = await orchestratorService.sendMessage(
             query,
             state.id || undefined
           )
 
+          // Set conversation ID from the first assistant message
+          const conversationId =
+            assistantMessages[0]?.conversation_id || state.id
+
           set({
-            id: assistantMessage.conversation_id,
-            messages: [...get().messages, assistantMessage],
+            id: conversationId,
+            messages: [...get().messages, ...assistantMessages],
             isLoading: false,
           })
         } catch (error) {

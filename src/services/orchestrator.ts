@@ -18,7 +18,7 @@ class OrchestratorService {
   async sendMessage(
     message: string,
     conversationId?: string
-  ): Promise<ChatMessage> {
+  ): Promise<ChatMessage[]> {
     // Check if user is authenticated
     const { user, isAuthenticated } = useAuthStore.getState()
     if (!isAuthenticated || !user) {
@@ -50,18 +50,44 @@ class OrchestratorService {
         }
       }
 
-      // Map backend response format to internal format for compatibility
-      return {
-        id: crypto.randomUUID(),
-        content: response.response,
-        role: 'assistant' as const,
-        timestamp: new Date().toISOString(),
-        conversation_id: response.conversation_id,
-        agent_queries: response.agent_queries,
-        metadata: {
-          agent_responses: response.agent_responses,
-        },
+      // Map backend response format to separate sage messages
+      if (
+        response.agent_responses &&
+        Object.keys(response.agent_responses).length > 0
+      ) {
+        // Sort sage names for consistent ordering
+        const sageNames = Object.keys(response.agent_responses).sort()
+
+        return sageNames
+          .filter((sageName) => response.agent_responses[sageName]?.trim()) // Only include sages with non-empty responses
+          .map((sageName) => ({
+            id: crypto.randomUUID(),
+            content: response.agent_responses[sageName],
+            role: 'assistant' as const,
+            timestamp: new Date().toISOString(),
+            conversation_id: response.conversation_id,
+            agent_name: sageName,
+            speaker_type: 'sage' as const,
+            agent_queries: response.agent_queries?.[sageName]
+              ? { [sageName]: response.agent_queries[sageName] }
+              : undefined,
+          }))
       }
+
+      // Fallback to consolidated response if no agent_responses
+      return [
+        {
+          id: crypto.randomUUID(),
+          content: response.response,
+          role: 'assistant' as const,
+          timestamp: new Date().toISOString(),
+          conversation_id: response.conversation_id,
+          agent_queries: response.agent_queries,
+          metadata: {
+            agent_responses: response.agent_responses,
+          },
+        },
+      ]
     } catch (error) {
       console.error('Orchestrator request failed:', error)
 
@@ -111,7 +137,7 @@ class OrchestratorService {
   async sendQuery(
     query: string,
     conversationId: string | null = null
-  ): Promise<ChatMessage> {
+  ): Promise<ChatMessage[]> {
     return this.sendMessage(query, conversationId || undefined)
   }
 }

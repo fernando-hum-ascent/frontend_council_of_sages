@@ -108,10 +108,10 @@ export function ChatInput({
             <button
               type="submit"
               disabled={disabled || !message.trim()}
-              className="flex h-12 w-12 items-center justify-center rounded-xl text-white shadow-sm transition-all hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500"
+              className="flex h-12 w-12 items-center justify-center rounded-xl text-white shadow-sm transition-all hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:text-gray-500"
               style={{
                 backgroundColor:
-                  disabled || !message.trim() ? undefined : '#396362',
+                  disabled || !message.trim() ? '#88a1a0' : '#396362',
               }}
               aria-label="Send message"
             >

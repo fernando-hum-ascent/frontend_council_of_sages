@@ -34,6 +34,8 @@ export interface ChatMessage {
   conversation_id?: string
   agent_queries?: Record<string, string>
   metadata?: Record<string, unknown>
+  agent_name?: string
+  speaker_type?: 'user' | 'council' | 'sage'
 }
 
 // Auth-related API types

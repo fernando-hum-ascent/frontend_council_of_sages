@@ -13,7 +13,7 @@ export function ChatHistoryList() {
 
       <div className="py-8 text-center text-sm text-gray-500">
         <MessageSquare className="mx-auto mb-2 h-8 w-8 opacity-50" />
-        <p>Chat history will appear here</p>
+        <p>Chat history coming soon</p>
         <p className="mt-1 text-xs">Future feature</p>
       </div>
 

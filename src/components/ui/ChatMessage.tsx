@@ -2,6 +2,7 @@ import { formatDistanceToNow } from 'date-fns'
 import { User, ChevronDown, ChevronUp } from 'lucide-react'
 import { useState } from 'react'
 import type { ChatMessage as ChatMessageType } from '@/types/api'
+import { getInitials } from '@/utils/names'
 import sageImage from '@/assets/sage.png'
 
 interface ChatMessageProps {
@@ -19,7 +20,20 @@ export function ChatMessage({ message }: ChatMessageProps) {
           className="flex h-8 w-8 items-center justify-center rounded-full"
           style={{ backgroundColor: '#f0ecf0' }}
         >
-          <img src={sageImage} alt="Council" className="h-6 w-6 rounded-full" />
+          {message.agent_name ? (
+            <span
+              className="text-sm font-medium text-gray-700"
+              aria-label={message.agent_name}
+            >
+              {getInitials(message.agent_name)}
+            </span>
+          ) : (
+            <img
+              src={sageImage}
+              alt="Council"
+              className="h-6 w-6 rounded-full"
+            />
+          )}
         </div>
       )}
 
@@ -54,12 +68,18 @@ export function ChatMessage({ message }: ChatMessageProps) {
         {!isUser && showDetails && message.agent_queries && (
           <div className="mt-2 rounded-lg bg-gray-50 p-3 text-sm dark:bg-gray-900">
             <h4 className="font-medium text-gray-900 dark:text-white">
-              Agent Queries:
+              {message.agent_name ? 'Sage Query:' : 'Agent Queries:'}
             </h4>
             <div className="mt-1 space-y-1">
               {Object.entries(message.agent_queries).map(([agent, query]) => (
                 <div key={agent} className="text-gray-600 dark:text-gray-400">
-                  <span className="font-medium">{agent}:</span> {query}
+                  {message.agent_name ? (
+                    <span>{query}</span>
+                  ) : (
+                    <>
+                      <span className="font-medium">{agent}:</span> {query}
+                    </>
+                  )}
                 </div>
               ))}
             </div>

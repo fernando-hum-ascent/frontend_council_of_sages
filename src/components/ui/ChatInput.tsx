@@ -24,6 +24,14 @@ export function ChatInput({
 }: ChatInputProps) {
   const [internalMessage, setInternalMessage] = useState('')
 
+  // Basic mobile detection to tweak Enter key behavior on touch devices
+  const isMobile =
+    (typeof navigator !== 'undefined' &&
+      /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) ||
+    (typeof window !== 'undefined' &&
+      (navigator.maxTouchPoints > 0 ||
+        (window.matchMedia && window.matchMedia('(pointer: coarse)').matches)))
+
   // Determine if component is controlled
   const isControlled = value !== undefined
   const message = isControlled ? value : internalMessage
@@ -53,6 +61,9 @@ export function ChatInput({
     if (e.nativeEvent.isComposing) return
 
     if (e.key === 'Enter' && !e.shiftKey) {
+      // On mobile, let Enter insert a newline instead of sending
+      if (isMobile) return
+
       e.preventDefault()
       if (message.trim() && onSend && !disabled) {
         onSend(message.trim())
@@ -128,7 +139,9 @@ export function ChatInput({
         </div>
       </form>
       <div className="mt-2 text-center text-xs text-gray-500 dark:text-gray-400">
-        Press Enter to send, Shift+Enter for new line
+        {isMobile
+          ? 'Tap Send to submit. Enter adds a new line'
+          : 'Press Enter to send, Shift+Enter for new line'}
         {showReset && ' • Reset button clears conversation'}
       </div>
     </div>

@@ -28,10 +28,10 @@ export function HomePage() {
   } = useConversationStore()
 
   const suggestions = [
+    'How should one navigate a career path in the AI era? - Include Marcus Aurelius in the council',
+    'How can I distinguish between intuition and bias? - Include Ghandi in the council',
     'Does this plan [brief plan] benefit from AI progress, or is it fragile to it?',
     'What is a robust framework for making high-stakes decisions?',
-    'How should one navigate a career path in the AI era?',
-    'How can I distinguish between intuition and bias?',
     "What's the best way to decide when to quit versus persist in a project?",
     'Stress-test this plan: [brief plan]. Where could it fail and how to hedge?',
   ]

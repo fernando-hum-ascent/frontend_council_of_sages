@@ -54,6 +54,40 @@ export function FirebaseAuthUI({ className }: FirebaseAuthUIProps) {
           if (loader) {
             loader.style.display = 'none'
           }
+
+          // Update provider button labels to reflect combined sign in/sign up flow
+          const updateProviderButtonLabels = () => {
+            const container = elementRef.current
+            if (!container) return
+
+            const setButtonLabel = (providerId: string, newLabel: string) => {
+              const buttons = container.querySelectorAll<HTMLButtonElement>(
+                `button[data-provider-id="${providerId}"]`
+              )
+              buttons.forEach((button) => {
+                button.setAttribute('aria-label', newLabel)
+                const longSpan = button.querySelector<HTMLElement>(
+                  '.firebaseui-idp-text-long'
+                )
+                const shortSpan = button.querySelector<HTMLElement>(
+                  '.firebaseui-idp-text-short'
+                )
+                const textSpan = button.querySelector<HTMLElement>(
+                  '.firebaseui-idp-text'
+                )
+                ;[longSpan, shortSpan, textSpan].forEach((el) => {
+                  if (el) el.textContent = newLabel
+                })
+              })
+            }
+
+            setButtonLabel('password', 'Continue with Email')
+            setButtonLabel('google.com', 'Continue with Google')
+          }
+
+          // Run immediately and on next tick to catch late DOM updates
+          updateProviderButtonLabels()
+          setTimeout(updateProviderButtonLabels, 0)
         },
       },
       signInFlow: 'popup', // Use popup for better UX

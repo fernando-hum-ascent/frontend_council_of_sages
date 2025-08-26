@@ -95,7 +95,7 @@ export function Layout({ children }: LayoutProps) {
                   className="flex items-center space-x-2 rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
                 >
                   <LogIn className="h-4 w-4" />
-                  <span>Sign In</span>
+                  <span>Sign in / up</span>
                 </Link>
               )}
             </div>
@@ -173,7 +173,7 @@ export function Layout({ children }: LayoutProps) {
                       className="mx-4 flex items-center space-x-2 rounded-md bg-green-600 px-4 py-2 text-base font-medium text-white hover:bg-green-700"
                     >
                       <LogIn className="h-4 w-4" />
-                      <span>Sign In</span>
+                      <span>Sign in / up</span>
                     </Link>
                   )}
                 </div>

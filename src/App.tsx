@@ -4,6 +4,7 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { Layout } from '@/components/common/Layout'
 import { ErrorFallback } from '@/components/common/ErrorFallback'
 import { ProtectedRoute } from '@/components/common/ProtectedRoute'
+import { SmartRoute } from '@/components/common/SmartRoute'
 import { HomePage } from '@/screens/HomePage'
 import { AuthPage } from '@/screens/AuthPage'
 import { AboutPage } from '@/screens/AboutPage'
@@ -25,7 +26,8 @@ function App() {
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <Layout>
         <Routes>
-          {/* Public routes */}
+          {/* Smart root route - shows landing or redirects to app based on auth */}
+          <Route path="/" element={<SmartRoute />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/verify-email" element={<VerifyEmailPage />} />
           <Route path="/about" element={<AboutPage />} />
@@ -34,7 +36,7 @@ function App() {
 
           {/* Protected routes */}
           <Route
-            path="/"
+            path="/app"
             element={
               <ProtectedRoute>
                 <HomePage />

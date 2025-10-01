@@ -28,10 +28,11 @@ const CTA = () => {
               onClick={handleStartCouncil}
               variant="sage"
               size="lg"
-              className="group h-12 px-8 text-lg"
+              className="group h-12 px-4 text-base sm:px-8 sm:text-lg"
             >
-              Start Your Council Now
-              <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              <span className="hidden sm:inline">Start Your Council Now</span>
+              <span className="sm:hidden">Start Council</span>
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1 sm:h-5 sm:w-5" />
             </Button>
           </div>
 

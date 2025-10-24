@@ -4,6 +4,7 @@ import { useState } from 'react'
 import type { ChatMessage as ChatMessageType } from '@/types/api'
 import { getInitials } from '@/utils/names'
 import sageImage from '@/assets/sage.png'
+import { MarkdownContent } from './MarkdownContent'
 
 interface ChatMessageProps {
   message: ChatMessageType
@@ -42,7 +43,18 @@ export function ChatMessage({ message }: ChatMessageProps) {
           className="rounded-2xl px-4 py-3 text-gray-900"
           style={{ backgroundColor: isUser ? '#f0eee6' : '#f0ecf0' }}
         >
-          <p className="whitespace-pre-wrap">{message.content}</p>
+          {isUser ? (
+            <p className="whitespace-pre-wrap">{message.content}</p>
+          ) : (
+            <>
+              {message.agent_name && (
+                <h1 className="mb-3 text-xl font-bold text-gray-900 dark:text-white">
+                  {message.agent_name}:
+                </h1>
+              )}
+              <MarkdownContent content={message.content} />
+            </>
+          )}
         </div>
 
         <div className="mt-1 flex items-center gap-2 text-xs text-gray-500">
